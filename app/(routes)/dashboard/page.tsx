@@ -29,14 +29,7 @@ const Dashboard = () => {
             });
         }
     };
-    return (
-        <div>
-            Dashboard
-            <Button>
-                <LogoutLink>Logout</LogoutLink>
-            </Button>
-        </div>
-    );
+    return <div></div>;
 };
 
 export default Dashboard;

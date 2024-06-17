@@ -1,4 +1,5 @@
 "use client";
+import SideNav from "@/app/components/dashboard/SideNav";
 import {api} from "@/convex/_generated/api";
 import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
 import {useConvex} from "convex/react";
@@ -23,7 +24,16 @@ const DashboardLayout = ({
             router.push("teams/create");
         }
     };
-    return <div>{children}</div>;
+    return (
+        <div>
+            <div className="grid grid-cols-4">
+                <div>
+                    <SideNav />
+                </div>
+                <div className="grid-cols-3">{children}</div>
+            </div>
+        </div>
+    );
 };
 
 export default DashboardLayout;
