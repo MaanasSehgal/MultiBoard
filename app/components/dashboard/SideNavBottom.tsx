@@ -4,7 +4,7 @@ import {Button} from "@/components/ui/button";
 import {Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {Input} from "@/components/ui/input";
 
-const SideNavBottom = ({onFileCreate}: any) => {
+const SideNavBottom = ({onFileCreate, totalFiles}: any) => {
     const menuList = [
         {id: 1, name: "Getting Started", icon: Flag, path: ""},
         {id: 2, name: "Github", icon: Github, path: ""},
@@ -47,10 +47,14 @@ const SideNavBottom = ({onFileCreate}: any) => {
 
             {/* Progress Bar */}
             <div className="h-4 w-full bg-gray-200 rounded-full mt-5">
-                <div className={`h-4 w-[40%] bg-blue-600 rounded-full`}></div>
+                <div
+                    style={{
+                        width: `${totalFiles <= 5 ? totalFiles * 20 : 0}%`,
+                    }}
+                    className={`h-4 rounded-full ${totalFiles < 5 ? "bg-blue-600" : "bg-red-600"}`}></div>
             </div>
             <h2 className="text-[12px] mt-3">
-                <strong>1</strong> Out of <strong>5</strong> files used
+                <strong>{totalFiles ? totalFiles : 0}</strong> out of <strong>5</strong> files used
             </h2>
             <h2 className="text-[12px] mt-1">Upgrade your plan for unlimited access.</h2>
         </div>

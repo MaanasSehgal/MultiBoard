@@ -1,4 +1,6 @@
 "use client";
+import FileList from "@/app/components/dashboard/FileList";
+import Header from "@/app/components/dashboard/Header";
 import {Button} from "@/components/ui/button";
 import {api} from "@/convex/_generated/api";
 import {LogoutLink, useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
@@ -29,7 +31,12 @@ const Dashboard = () => {
             });
         }
     };
-    return <div></div>;
+    return (
+        <div className="p-8">
+            <Header />
+            <FileList />
+        </div>
+    );
 };
 
 export default Dashboard;
