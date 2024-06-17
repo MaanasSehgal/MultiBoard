@@ -14,19 +14,17 @@ const SideNavBottom = ({onFileCreate, totalFiles}: any) => {
     return (
         <div>
             {menuList.map((menu, idx) => (
-                <h2 className="flex gap-2 p-1 px-2 text-[14px] hover:bg-gray-100 rounded-md cursor-pointer">
+                <h2 key={idx} className="flex gap-2 p-1 px-2 text-[14px] hover:bg-gray-100 rounded-md cursor-pointer">
                     <menu.icon className="h-5 w-5" />
                     {menu.name}
                 </h2>
             ))}
             {/* Add New File Button */}
             <Dialog>
-                <DialogTrigger asChild>
-                    <div className="w-full">
-                        <Button type="reset" className="w-full bg-blue-500 hover:bg-blue-700 justify-start mt-3">
-                            New File
-                        </Button>
-                    </div>
+                <DialogTrigger className="w-full" asChild>
+                <Button disabled={totalFiles >= 5} type="button" className="w-full bg-blue-500 hover:bg-blue-700 justify-start mt-3">
+                        New File
+                    </Button>
                 </DialogTrigger>
                 <DialogContent>
                     <DialogHeader>
