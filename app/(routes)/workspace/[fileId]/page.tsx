@@ -40,7 +40,7 @@ const Workspace = ({params}: any) => {
     };
 
     return (
-        <div className={`w-screen h-[${isVertical ? "200" : "100"}vh] bg-pink-200 flex flex-col`}>
+        <div className={`w-screen h-[${isVertical ? "200" : "100"}vh] flex flex-col`}>
             <WorkspaceHeader fileName={fileData && fileData?.fileName} onSave={() => setTriggerSave(!triggerSave)} />
             <ResizablePanelGroup direction={isVertical ? "vertical" : "horizontal"} className=" ">
                 <ResizablePanel defaultSize={50}>
@@ -48,9 +48,9 @@ const Workspace = ({params}: any) => {
                         <Editor onSaveTrigger={triggerSave} fileId={params.fileId} fileData={fileData} />
                     </div>
                 </ResizablePanel>
-                <ResizableHandle />
+                <ResizableHandle className={`${isVertical ? "h-2" : "w-2"}`} />
                 <ResizablePanel defaultSize={50}>
-                    <div className={` ${isVertical ? "h-screen" : "h-full"}`}>
+                    <div className={` ${isVertical ? "h-screen" : "h-full"} overflow-scroll`}>
                         <Canvas onSaveTrigger={triggerSave} fileId={params.fileId} fileData={fileData} />
                     </div>
                 </ResizablePanel>
