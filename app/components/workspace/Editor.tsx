@@ -1,5 +1,5 @@
 "use client";
-import React, {useEffect} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import EditorJS from "@editorjs/editorjs";
 // @ts-ignore
 import Header from "@editorjs/header";
@@ -13,31 +13,72 @@ import ImageTool from "@editorjs/image";
 import CodeBox from "@bomdi/codebox";
 // @ts-ignore
 import Paragraph from "@editorjs/paragraph";
+import {useMutation} from "convex/react";
+import {api} from "@/convex/_generated/api";
+import {toast} from "sonner";
 
-const Editor = () => {
+const rawDocument = {
+    time: 1550476186479,
+    blocks: [
+        {
+            data: {
+                text: "Document Name",
+                level: 2,
+            },
+            id: "123",
+            type: "header",
+        },
+        {
+            data: {
+                level: 4,
+            },
+            id: "1234",
+            type: "header",
+        },
+    ],
+    version: "2.8.1",
+};
+const Editor = ({onSaveTrigger, fileId}: any) => {
+    const ref = useRef<EditorJS>();
+    const updateDocument = useMutation(api.files.updateDocument);
+
+    const [document, setDocument] = useState(rawDocument);
+
     useEffect(() => {
-        initEditor();
-    });
+        if (!ref.current) {
+            initEditor();
+        }
+        return () => {
+            if (ref.current) {
+                ref.current.destroy();
+                ref.current = undefined;
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        // console.log("Trigger value: ", onSaveTrigger);
+        onSaveTrigger && onSaveDocument();
+    }, [onSaveTrigger]);
 
     const initEditor = () => {
         const editor = new EditorJS({
-            /**
-             * Id of Element that should contain Editor instance
-             */
             tools: {
                 paragraph: {
                     class: Paragraph,
+                    shortcut: "CTRL+P",
                     inlineToolbar: true,
                 },
                 header: {
                     class: Header,
-                    shortcut: "CTRL+SHIFT+H",
+                    shortcut: "CTRL+H",
                     config: {
                         placeholder: "Enter Header",
                     },
                 },
                 list: {
                     class: List,
+                    shortcut: "CTRL+L",
                     inlineToolbar: true,
                     config: {
                         defaultStyle: "unordered",
@@ -49,6 +90,7 @@ const Editor = () => {
                 },
                 image: {
                     class: ImageTool,
+                    shortcut: "CTRL+I",
                     config: {
                         endpoints: {
                             byFile: "http://localhost:8008/uploadFile", // Your backend file uploader endpoint
@@ -66,7 +108,33 @@ const Editor = () => {
                 },
             },
             holder: "editorjs",
+            data: document,
         });
+        ref.current = editor;
+    };
+
+    const onSaveDocument = () => {
+        if (ref.current) {
+            ref.current
+                .save()
+                .then((outputData) => {
+                    console.log("Article data: ", outputData);
+                    updateDocument({
+                        _id: fileId,
+                        document: JSON.stringify(outputData),
+                    }).then(
+                        (res) => {
+                            toast("Document Updated!");
+                        },
+                        (e) => {
+                            toast("Server Error: ", e);
+                        },
+                    );
+                })
+                .catch((error) => {
+                    console.log("Saving failed: ", error);
+                });
+        }
     };
     return (
         <div>
