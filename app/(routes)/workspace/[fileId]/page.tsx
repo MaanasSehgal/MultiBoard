@@ -34,22 +34,23 @@ const Workspace = ({params}: any) => {
 
     const getFileData = async () => {
         const result = await convex.query(api.files.getFileById, {_id: params.fileId});
+        console.log("FileName: ", result.fileName);
         // console.log(result);
         setFileData(result);
     };
 
     return (
-        <div className={`w-100vw h-[${isVertical ? "186" : "100"}vh]`}>
-            <WorkspaceHeader onSave={() => setTriggerSave(!triggerSave)} />
-            <ResizablePanelGroup direction={isVertical ? "vertical" : "horizontal"} className="w-full h-full">
+        <div className={`w-screen h-[${isVertical ? "200" : "100"}vh] bg-pink-200 flex flex-col`}>
+            <WorkspaceHeader fileName={fileData && fileData?.fileName} onSave={() => setTriggerSave(!triggerSave)} />
+            <ResizablePanelGroup direction={isVertical ? "vertical" : "horizontal"} className=" ">
                 <ResizablePanel defaultSize={50}>
-                    <div className="h-full">
+                    <div className={` ${isVertical ? "h-screen" : "h-full"}`}>
                         <Editor onSaveTrigger={triggerSave} fileId={params.fileId} fileData={fileData} />
                     </div>
                 </ResizablePanel>
                 <ResizableHandle />
                 <ResizablePanel defaultSize={50}>
-                    <div className="h-full">
+                    <div className={` ${isVertical ? "h-screen" : "h-full"}`}>
                         <Canvas onSaveTrigger={triggerSave} fileId={params.fileId} fileData={fileData} />
                     </div>
                 </ResizablePanel>

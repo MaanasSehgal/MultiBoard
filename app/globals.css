@@ -91,5 +91,7 @@ h6.ce-header {
     }
     body {
         @apply bg-background text-foreground;
+        width: 100vw;
+        height: 100vh;
     }
 }
