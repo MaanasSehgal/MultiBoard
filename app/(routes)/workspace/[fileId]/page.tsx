@@ -43,7 +43,7 @@ const Workspace = ({params}: any) => {
             <WorkspaceHeader onSave={() => setTriggerSave(!triggerSave)} />
             <ResizablePanelGroup direction={isVertical ? "vertical" : "horizontal"} className="w-full h-full">
                 <ResizablePanel defaultSize={50}>
-                    <div className="h-full bg-pink-200">
+                    <div className="h-full">
                         <Editor onSaveTrigger={triggerSave} fileId={params.fileId} fileData={fileData} />
                     </div>
                 </ResizablePanel>
